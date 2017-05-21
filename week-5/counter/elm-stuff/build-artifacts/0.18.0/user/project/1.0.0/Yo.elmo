@@ -1,0 +1,159 @@
+var _user$project$Yo$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Increment':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{count: model.count + 1, increase: model.increase + 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Decrement':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{count: model.count - 1, decrease: model.decrease + 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Reset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{count: 0, increase: 0, decrease: 0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _user$project$Yo$initialModel = {count: 0, increase: 0, decrease: 0};
+var _user$project$Yo$jsMsgs = _elm_lang$core$Native_Platform.incomingPort('jsMsgs', _elm_lang$core$Json_Decode$int);
+var _user$project$Yo$Model = F3(
+	function (a, b, c) {
+		return {count: a, increase: b, decrease: c};
+	});
+var _user$project$Yo$NoOp = {ctor: 'NoOp'};
+var _user$project$Yo$Reset = {ctor: 'Reset'};
+var _user$project$Yo$Decrement = {ctor: 'Decrement'};
+var _user$project$Yo$Increment = {ctor: 'Increment'};
+var _user$project$Yo$mapJsMsg = function ($int) {
+	var _p1 = $int;
+	if (_p1 === 1) {
+		return _user$project$Yo$Increment;
+	} else {
+		return _user$project$Yo$NoOp;
+	}
+};
+var _user$project$Yo$subscriptions = function (model) {
+	return _user$project$Yo$jsMsgs(_user$project$Yo$mapJsMsg);
+};
+var _user$project$Yo$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_user$project$Yo$Increment),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('+'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(model.count)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Yo$Decrement),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('-'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h3,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'+ clicked ',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(model.increase),
+											' times'))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h3,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											'-clicked ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Basics$toString(model.decrease),
+												' times'))),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Yo$Reset),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Reset'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Yo$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Yo$initialModel, _1: _elm_lang$core$Platform_Cmd$none},
+		update: _user$project$Yo$update,
+		view: _user$project$Yo$view,
+		subscriptions: _user$project$Yo$subscriptions
+	})();

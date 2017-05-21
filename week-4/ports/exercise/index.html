@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Elm Port Exercise</title>
+  </head>
+  <body>
+    <!-- an element to embed our elm app into -->
+    <div id='root'></div>
+    <!-- our increment button -->
+    <button id="increment">+</button>
+    <!-- our list to hold outbound values -->
+    <ul id='outbound'></ul>
+    <!-- load our elm app -->
+    <script type="text/javascript" src="elm.js"></script>
+    <script>
+      // Gather some elements into local variables
+      var root = document.getElementById('root');
+      var increment = document.getElementById('increment');
+      var outbound = document.getElementById('outbound');
+      // embed the elm app inside our root element
+      var app = Elm.Main.embed(root);
+      // Just giving ourselves a chance to interact with the app from the js console
+      window.app = app;
+      // When we see data from the outbound port, add an <li>
+      app.ports.outbound.subscribe(function(data){
+        var li = document.createElement('LI');
+        li.innerText = data;
+        outbound.appendChild(li);
+      });
+      // When we click the increment button, send an empty record to the elm app's
+      // inbound port
+      increment.onclick = function(){
+        app.ports.increment.send({});
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Elm Ports Counter Example</title>
+    </head>
+    <body>
+        <!-- We'll load elm.js, which will be produced for us by elm-make and will
+             include our module as well as the elm runtime in general -->
+        <script type="text/javascript" src="elm.js"></script>
+        <script>
+         // Then we'll use `Elm.fullscreen` to load our application and have it
+         // take over the full screen.
+         var app = Elm.Main.fullscreen();
+         
+         // We will declare an variable called incrementClickCount, that keeps track
+         // of increment clicks from Elm.
+         var incrementClickCount = 0;
+         var decrementClickCount = 0;
+
+         // When increment is clicked, this function is invoked.
+         // The function subscribes to app.ports.increment function and whenever
+         // increment is clicked, this function runs
+         // This is how we send value from Elm into Javascript application
+         app.ports.increment.subscribe(function() {
+           incrementClickCount += 1;
+           console.log("Increment has been clicked " + incrementClickCount + " times.");
+         });
+          
+         app.ports.decrement.subscribe(function() {
+           decrementClickCount += 1;
+           console.log("Decrement has been clicked " + decrementClickCount + " times.")
+         })
+
+         // Finally, we'll expose our app as a global variable, which will allow
+         // us to manipulate it from the console later.
+         window.app = app;
+        </script>
+    </body>
+</html>
