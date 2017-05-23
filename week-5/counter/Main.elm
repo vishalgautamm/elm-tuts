@@ -1,31 +1,28 @@
 port module Main exposing (..)
 
-import Html exposing (Html, div, text, button, h3)
+import Html exposing (..)
 import Html.Events exposing (onClick)
-
-
--- MODEL
 
 
 type alias Model =
     { count : Int
-    , increase : Int
-    , decrease : Int
+    , increment : Int
+    , decrement : Int
     }
 
 
 type Msg
     = Increment
     | Decrement
-    | Reset
+    | Set Int
     | NoOp
 
 
 initialModel : Model
 initialModel =
     { count = 0
-    , increase = 0
-    , decrease = 0
+    , increment = 0
+    , decrement = 0
     }
 
 
@@ -39,88 +36,85 @@ mapJsMsg int =
             NoOp
 
 
-
--- UPDATE
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Increment ->
-            ( { model
-                | count = model.count + 1
-                , increase = model.increase + 1
-              }
-            , increment ()
-            )
+            let
+                newModel =
+                    { model
+                        | count = model.count + 1
+                        , increment = model.increment + 1
+                    }
+            in
+                ( newModel
+                , Cmd.batch
+                    [ increment ()
+                    , storage newModel.count
+                    ]
+                )
 
         Decrement ->
-            ( { model
-                | count = model.count - 1
-                , decrease = model.decrease + 1
-              }
-            , decrement ()
-            )
+            let
+                newModel =
+                    { model
+                        | count = model.count - 1
+                        , decrement = model.decrement + 1
+                    }
+            in
+                ( newModel
+                , storage newModel.count
+                )
 
-        Reset ->
-            ( { model
-                | count = 0
-                , increase = 0
-                , decrease = 0
-              }
-            , Cmd.none
-            )
+        Set newCount ->
+            ( { model | count = newCount }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
 
 
-
--- VIEW
-
-
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Increment ] [ text "+" ]
+        [ button [ onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.count) ]
-        , button [ onClick Decrement ] [ text "-" ]
-        , h3 [] [ text ("+ clicked " ++ (toString model.increase) ++ " times") ]
-        , h3 [] [ text ("-clicked " ++ (toString model.decrease) ++ " times") ]
-        , button [ onClick Reset ] [ text "Reset" ]
+        , button [ onClick Increment ] [ text "+" ]
+        , h3 [] [ text ("- clicked " ++ (toString model.decrement) ++ " times") ]
+        , h3 [] [ text ("+ clicked " ++ (toString model.increment) ++ " times") ]
         ]
 
 
 main =
     Html.program
         { init = ( initialModel, Cmd.none )
-        , update = update
         , view = view
+        , update = update
         , subscriptions = subscriptions
         }
 
 
-
--- SUBSCRIPTIONS
-
-
 subscriptions model =
-    jsMsgs mapJsMsg
+    Sub.batch
+        [ jsMsgs mapJsMsg
+        , storageInput Set
+        ]
 
 
 
--- PORTS
--- INCOMING PORT
+-- INPUT PORTS
 
 
 port jsMsgs : (Int -> msg) -> Sub msg
 
 
+port storageInput : (Int -> msg) -> Sub msg
 
--- OUTGOING PORTS
+
+
+-- OUTPUT PORTS
 
 
 port increment : () -> Cmd msg
 
 
-port decrement : () -> Cmd msg
+port storage : Int -> Cmd msg
