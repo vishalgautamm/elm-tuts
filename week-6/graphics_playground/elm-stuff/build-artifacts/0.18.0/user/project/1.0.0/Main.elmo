@@ -1,0 +1,83 @@
+var _user$project$Main$square = _evancz$elm_graphics$Collage$square(100);
+var _user$project$Main$redSquare = A2(
+	_evancz$elm_graphics$Collage$outlined,
+	_evancz$elm_graphics$Collage$solid(_elm_lang$core$Color$red),
+	_user$project$Main$square);
+var _user$project$Main$blueSquare = A2(
+	_evancz$elm_graphics$Collage$outlined,
+	_evancz$elm_graphics$Collage$dashed(_elm_lang$core$Color$blue),
+	_user$project$Main$square);
+var _user$project$Main$squares = function (_p0) {
+	var _p1 = _p0;
+	var theGroup = _evancz$elm_graphics$Collage$group(
+		{
+			ctor: '::',
+			_0: A2(
+				_evancz$elm_graphics$Collage$move,
+				{ctor: '_Tuple2', _0: 0, _1: -55},
+				_user$project$Main$blueSquare),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$move,
+					{ctor: '_Tuple2', _0: 0, _1: 55},
+					_user$project$Main$redSquare),
+				_1: {ctor: '[]'}
+			}
+		});
+	var originGroup = A2(
+		_evancz$elm_graphics$Collage$move,
+		{ctor: '_Tuple2', _0: -400, _1: 400},
+		theGroup);
+	var movedGroup = A2(
+		_evancz$elm_graphics$Collage$move,
+		{
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$toFloat(_p1._0),
+			_1: _elm_lang$core$Basics$toFloat(0 - _p1._1)
+		},
+		originGroup);
+	return A3(
+		_evancz$elm_graphics$Collage$collage,
+		800,
+		800,
+		{
+			ctor: '::',
+			_0: movedGroup,
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$view = function (model) {
+	return _evancz$elm_graphics$Element$toHtml(
+		_user$project$Main$squares(
+			{ctor: '_Tuple2', _0: model.position.x, _1: model.position.y}));
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{position: _p2._0}),
+			{ctor: '[]'});
+	});
+var _user$project$Main$model = {
+	position: {x: 0, y: 0}
+};
+var _user$project$Main$Model = function (a) {
+	return {position: a};
+};
+var _user$project$Main$MoveMouse = function (a) {
+	return {ctor: 'MoveMouse', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$mouse$Mouse$moves(_user$project$Main$MoveMouse);
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none},
+		update: _user$project$Main$update,
+		view: _user$project$Main$view,
+		subscriptions: _user$project$Main$subscriptions
+	})();
