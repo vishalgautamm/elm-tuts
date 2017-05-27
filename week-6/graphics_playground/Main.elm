@@ -39,13 +39,27 @@ update msg model =
             { model | position = newPosition } ! []
 
 
-squares : ( Int, Int ) -> Element
-squares ( x, y ) =
+
+-- VIEW
+
+
+view : Model -> Html Msg
+view model =
+    shapes ( model.position.x, model.position.y )
+        |> Element.toHtml
+
+
+shapes : ( Int, Int ) -> Element
+shapes ( x, y ) =
     let
         theGroup =
             group
                 [ move ( 0, -55 ) blueSquare
                 , move ( 0, 55 ) redSquare
+                , move ( -110, -55 ) blueCircle
+                , move ( -110, 55 ) redCircle
+                , move ( 110, -55 ) blueHexagon
+                , move ( 110, 55 ) redOctagon
                 ]
 
         originGroup =
@@ -55,6 +69,16 @@ squares ( x, y ) =
             move ( toFloat (x), toFloat (-y) ) originGroup
     in
         collage 800 800 [ movedGroup ]
+
+
+blueHexagon : Form
+blueHexagon =
+    filled blue (ngon 6 50)
+
+
+redOctagon : Form
+redOctagon =
+    filled red (ngon 8 50)
 
 
 blueSquare : Form
@@ -72,14 +96,19 @@ square =
     Collage.square 100
 
 
+blueCircle : Form
+blueCircle =
+    filled blue circle
 
--- VIEW
+
+redCircle : Form
+redCircle =
+    filled red circle
 
 
-view : Model -> Html Msg
-view model =
-    squares ( model.position.x, model.position.y )
-        |> Element.toHtml
+circle : Shape
+circle =
+    Collage.circle 50
 
 
 

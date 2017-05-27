@@ -1,3 +1,6 @@
+var _user$project$Main$circle = _evancz$elm_graphics$Collage$circle(50);
+var _user$project$Main$redCircle = A2(_evancz$elm_graphics$Collage$filled, _elm_lang$core$Color$red, _user$project$Main$circle);
+var _user$project$Main$blueCircle = A2(_evancz$elm_graphics$Collage$filled, _elm_lang$core$Color$blue, _user$project$Main$circle);
 var _user$project$Main$square = _evancz$elm_graphics$Collage$square(100);
 var _user$project$Main$redSquare = A2(
 	_evancz$elm_graphics$Collage$outlined,
@@ -7,7 +10,15 @@ var _user$project$Main$blueSquare = A2(
 	_evancz$elm_graphics$Collage$outlined,
 	_evancz$elm_graphics$Collage$dashed(_elm_lang$core$Color$blue),
 	_user$project$Main$square);
-var _user$project$Main$squares = function (_p0) {
+var _user$project$Main$redOctagon = A2(
+	_evancz$elm_graphics$Collage$filled,
+	_elm_lang$core$Color$red,
+	A2(_evancz$elm_graphics$Collage$ngon, 8, 50));
+var _user$project$Main$blueHexagon = A2(
+	_evancz$elm_graphics$Collage$filled,
+	_elm_lang$core$Color$blue,
+	A2(_evancz$elm_graphics$Collage$ngon, 6, 50));
+var _user$project$Main$shapes = function (_p0) {
 	var _p1 = _p0;
 	var theGroup = _evancz$elm_graphics$Collage$group(
 		{
@@ -22,7 +33,35 @@ var _user$project$Main$squares = function (_p0) {
 					_evancz$elm_graphics$Collage$move,
 					{ctor: '_Tuple2', _0: 0, _1: 55},
 					_user$project$Main$redSquare),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: -110, _1: -55},
+						_user$project$Main$blueCircle),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$move,
+							{ctor: '_Tuple2', _0: -110, _1: 55},
+							_user$project$Main$redCircle),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$move,
+								{ctor: '_Tuple2', _0: 110, _1: -55},
+								_user$project$Main$blueHexagon),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$move,
+									{ctor: '_Tuple2', _0: 110, _1: 55},
+									_user$project$Main$redOctagon),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
 			}
 		});
 	var originGroup = A2(
@@ -49,7 +88,7 @@ var _user$project$Main$squares = function (_p0) {
 };
 var _user$project$Main$view = function (model) {
 	return _evancz$elm_graphics$Element$toHtml(
-		_user$project$Main$squares(
+		_user$project$Main$shapes(
 			{ctor: '_Tuple2', _0: model.position.x, _1: model.position.y}));
 };
 var _user$project$Main$update = F2(
