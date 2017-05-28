@@ -12,7 +12,11 @@ drawStamp ( x, y ) =
         |> filled red
         |> move ( toFloat (x), toFloat (-1 * y) )
 
--- VIEW 
+
+
+-- VIEW
+
+
 view : List ( Int, Int ) -> Element
 view positions =
     let
@@ -26,8 +30,17 @@ view positions =
             800
             [ originGroup ]
 
+
+clicks : List ( Int, Int )
+clicks =
+    [ ( 0, 0 ), ( 100, 100 ), ( 200, 100 ) ]
+
+
+
 -- MAIN
+
+
 main : Html msg
 main =
-  view [(0, 0), (100, 100), (200, 200)]
-    |> Element.toHtml
+    view clicks
+        |> Element.toHtml
