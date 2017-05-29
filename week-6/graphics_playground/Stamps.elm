@@ -66,6 +66,19 @@ update msg model =
         NoOp ->
           model ! []
 
+
+drawStamp : ( Int, Int ) -> Form
+drawStamp ( x, y ) =
+    let
+        (x, y) = stamp.position
+        shape = case stamp.shape of
+          Pentagon -> ngon 5 50
+          Circle -> circle 50
+    in
+       shape
+       |> filled blue
+       |> move (toFloat(x), toFloat(-y))
+
 -- VIEW
 
 
@@ -83,12 +96,6 @@ view model =
             [ originGroup ]
             |> Element.toHtml
 
-
-drawStamp : ( Int, Int ) -> Form
-drawStamp ( x, y ) =
-    ngon 5 50
-        |> filled red
-        |> move ( toFloat (x), toFloat (-1 * y) )
 
 
 clicks : List ( Int, Int )
