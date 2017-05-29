@@ -25,23 +25,55 @@ var _user$project$Stamps$drawStamp = function (_p0) {
 			_elm_lang$core$Color$red,
 			A2(_evancz$elm_graphics$Collage$ngon, 5, 50)));
 };
-var _user$project$Stamps$view = function (positions) {
+var _user$project$Stamps$view = function (model) {
 	var theGroup = _evancz$elm_graphics$Collage$group(
-		A2(_elm_lang$core$List$map, _user$project$Stamps$drawStamp, positions));
+		A2(_elm_lang$core$List$map, _user$project$Stamps$drawStamp, model.clicks));
 	var originGroup = A2(
 		_evancz$elm_graphics$Collage$move,
 		{ctor: '_Tuple2', _0: -400, _1: 400},
 		theGroup);
-	return A3(
-		_evancz$elm_graphics$Collage$collage,
-		800,
-		800,
-		{
-			ctor: '::',
-			_0: originGroup,
-			_1: {ctor: '[]'}
+	return _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			800,
+			800,
+			{
+				ctor: '::',
+				_0: originGroup,
+				_1: {ctor: '[]'}
+			}));
+};
+var _user$project$Stamps$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					clicks: {ctor: '::', _0: _p2._0, _1: model.clicks}
+				}),
+			{ctor: '[]'});
+	});
+var _user$project$Stamps$model = {clicks: _user$project$Stamps$clicks};
+var _user$project$Stamps$Model = function (a) {
+	return {clicks: a};
+};
+var _user$project$Stamps$AddClick = function (a) {
+	return {ctor: 'AddClick', _0: a};
+};
+var _user$project$Stamps$subscriptions = function (model) {
+	return _elm_lang$mouse$Mouse$clicks(
+		function (_p3) {
+			var _p4 = _p3;
+			return _user$project$Stamps$AddClick(
+				{ctor: '_Tuple2', _0: _p4.x, _1: _p4.y});
 		});
 };
-var _user$project$Stamps$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProgram(
-	_evancz$elm_graphics$Element$toHtml(
-		_user$project$Stamps$view(_user$project$Stamps$clicks)));
+var _user$project$Stamps$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Stamps$model, _1: _elm_lang$core$Platform_Cmd$none},
+		update: _user$project$Stamps$update,
+		view: _user$project$Stamps$view,
+		subscriptions: _user$project$Stamps$subscriptions
+	})();

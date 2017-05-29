@@ -3,25 +3,52 @@ module Stamps exposing (..)
 import Color exposing (..)
 import Collage exposing (..)
 import Element exposing (..)
-import Html exposing (..)
+import Html exposing (Html)
+import Mouse
 
 
-drawStamp : ( Int, Int ) -> Form
-drawStamp ( x, y ) =
-    ngon 5 50
-        |> filled red
-        |> move ( toFloat (x), toFloat (-1 * y) )
+-- MODEL
+
+
+type alias Position =
+    ( Int, Int )
+
+
+type alias Model =
+    { clicks : List Position
+    }
+
+
+type Msg
+    = AddClick Position
+
+
+model : Model
+model =
+    { clicks = clicks
+    }
+
+
+
+-- UPDATE
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        AddClick pos ->
+            { model | clicks = pos :: model.clicks } ! []
 
 
 
 -- VIEW
 
 
-view : List ( Int, Int ) -> Element
-view positions =
+view : Model -> Html Msg
+view model =
     let
         theGroup =
-            group (List.map drawStamp positions)
+            group (List.map drawStamp model.clicks)
 
         originGroup =
             move ( -400, 400 ) theGroup
@@ -29,6 +56,14 @@ view positions =
         collage 800
             800
             [ originGroup ]
+            |> Element.toHtml
+
+
+drawStamp : ( Int, Int ) -> Form
+drawStamp ( x, y ) =
+    ngon 5 50
+        |> filled red
+        |> move ( toFloat (x), toFloat (-1 * y) )
 
 
 clicks : List ( Int, Int )
@@ -40,7 +75,16 @@ clicks =
 -- MAIN
 
 
-main : Html msg
+main : Program Never Model Msg
 main =
-    view clicks
-        |> Element.toHtml
+    Html.program
+        { init = ( model, Cmd.none )
+        , update = update
+        , view = view
+        , subscriptions = subscriptions
+        }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Mouse.clicks (\{ x, y } -> AddClick ( x, y ))
