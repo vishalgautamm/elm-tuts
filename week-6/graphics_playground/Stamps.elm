@@ -59,7 +59,12 @@ update msg model =
                   Stamp pos Circle 
           in 
              { model | stamps = newStamp :: model.stamps } ! []
+        
+        HandleShift pressed ->
+          { model | shift = pressed } ! []
 
+        NoOp ->
+          model ! []
 
 -- VIEW
 
