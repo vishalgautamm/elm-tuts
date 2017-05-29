@@ -5,19 +5,20 @@ import Collage exposing (..)
 import Element exposing (..)
 import Html exposing (Html)
 import Mouse
-
+import Keyboard
 
 -- MODEL
 
+
 type Shape
-  = Pentagon
-  | Circle
+    = Pentagon
+    | Circle
+
 
 type alias Stamp =
-  { position : (Int, Int)
-  , shape : Shape
-
-}
+    { position : ( Int, Int )
+    , shape : Shape
+    }
 
 
 type alias Position =
@@ -26,7 +27,7 @@ type alias Position =
 
 type alias Model =
     { stamps : List Stamp
-    , shift : Bool 
+    , shift : Bool
     }
 
 
@@ -51,33 +52,41 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         AddClick pos ->
-          let
-              newStamp =
-                if model.shift then
-                   Stamp pos Pentagon
-                else
-                  Stamp pos Circle 
-          in 
-             { model | stamps = newStamp :: model.stamps } ! []
-        
+            let
+                newStamp =
+                    if model.shift then
+                        Stamp pos Pentagon
+                    else
+                        Stamp pos Circle
+            in
+                { model | stamps = newStamp :: model.stamps } ! []
+
         HandleShift pressed ->
-          { model | shift = pressed } ! []
+            { model | shift = pressed } ! []
 
         NoOp ->
-          model ! []
+            model ! []
 
 
-drawStamp : ( Int, Int ) -> Form
-drawStamp ( x, y ) =
+drawStamp : Stamp -> Form
+drawStamp stamp =
     let
-        (x, y) = stamp.position
-        shape = case stamp.shape of
-          Pentagon -> ngon 5 50
-          Circle -> circle 50
+        ( x, y ) =
+            stamp.position
+
+        shape =
+            case stamp.shape of
+                Pentagon ->
+                    ngon 5 50
+
+                Circle ->
+                    circle 50
     in
-       shape
-       |> filled blue
-       |> move (toFloat(x), toFloat(-y))
+        shape
+            |> filled red
+            |> move ( toFloat (x), toFloat (-y) )
+
+
 
 -- VIEW
 
@@ -86,7 +95,7 @@ view : Model -> Html Msg
 view model =
     let
         theGroup =
-            group (List.map drawStamp model.clicks)
+            group (List.map drawStamp model.stamps)
 
         originGroup =
             move ( -400, 400 ) theGroup
@@ -97,17 +106,10 @@ view model =
             |> Element.toHtml
 
 
-
-clicks : List ( Int, Int )
-clicks =
-    [ ( 0, 0 ), ( 100, 100 ), ( 200, 100 ) ]
-
-
-
 -- MAIN
 
 
-main : Program Never Model Msg
+main : Program Never Model Msg 
 main =
     Html.program
         { init = ( model, Cmd.none )
@@ -117,6 +119,30 @@ main =
         }
 
 
+mapKeyDown : Int -> Msg
+mapKeyDown keyCode =
+    case Debug.log "mapKeyDown" keyCode of
+        16 ->
+            HandleShift True
+
+        _ ->
+            NoOp
+
+
+mapKeyUp : Int -> Msg
+mapKeyUp keyCode =
+    case Debug.log "mapKeyUp" keyCode of
+        16 ->
+            HandleShift False
+
+        _ ->
+            NoOp
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Mouse.clicks (\{ x, y } -> AddClick ( x, y ))
+    Sub.batch
+        [ Mouse.clicks (\{ x, y } -> AddClick ( x, y ))
+        , Keyboard.downs mapKeyDown
+        , Keyboard.ups mapKeyUp
+        ]

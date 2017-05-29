@@ -1,33 +1,27 @@
-var _user$project$Stamps$clicks = {
-	ctor: '::',
-	_0: {ctor: '_Tuple2', _0: 0, _1: 0},
-	_1: {
-		ctor: '::',
-		_0: {ctor: '_Tuple2', _0: 100, _1: 100},
-		_1: {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: 200, _1: 100},
-			_1: {ctor: '[]'}
+var _user$project$Stamps$drawStamp = function (stamp) {
+	var shape = function () {
+		var _p0 = stamp.shape;
+		if (_p0.ctor === 'Pentagon') {
+			return A2(_evancz$elm_graphics$Collage$ngon, 5, 50);
+		} else {
+			return _evancz$elm_graphics$Collage$circle(50);
 		}
-	}
-};
-var _user$project$Stamps$drawStamp = function (_p0) {
-	var _p1 = _p0;
+	}();
+	var _p1 = stamp.position;
+	var x = _p1._0;
+	var y = _p1._1;
 	return A2(
 		_evancz$elm_graphics$Collage$move,
 		{
 			ctor: '_Tuple2',
-			_0: _elm_lang$core$Basics$toFloat(_p1._0),
-			_1: _elm_lang$core$Basics$toFloat(-1 * _p1._1)
+			_0: _elm_lang$core$Basics$toFloat(x),
+			_1: _elm_lang$core$Basics$toFloat(0 - y)
 		},
-		A2(
-			_evancz$elm_graphics$Collage$filled,
-			_elm_lang$core$Color$red,
-			A2(_evancz$elm_graphics$Collage$ngon, 5, 50)));
+		A2(_evancz$elm_graphics$Collage$filled, _elm_lang$core$Color$red, shape));
 };
 var _user$project$Stamps$view = function (model) {
 	var theGroup = _evancz$elm_graphics$Collage$group(
-		A2(_elm_lang$core$List$map, _user$project$Stamps$drawStamp, model.clicks));
+		A2(_elm_lang$core$List$map, _user$project$Stamps$drawStamp, model.stamps));
 	var originGroup = A2(
 		_evancz$elm_graphics$Collage$move,
 		{ctor: '_Tuple2', _0: -400, _1: 400},
@@ -43,31 +37,91 @@ var _user$project$Stamps$view = function (model) {
 				_1: {ctor: '[]'}
 			}));
 };
+var _user$project$Stamps$model = {
+	stamps: {ctor: '[]'},
+	shift: false
+};
+var _user$project$Stamps$Stamp = F2(
+	function (a, b) {
+		return {position: a, shape: b};
+	});
+var _user$project$Stamps$Model = F2(
+	function (a, b) {
+		return {stamps: a, shift: b};
+	});
+var _user$project$Stamps$Circle = {ctor: 'Circle'};
+var _user$project$Stamps$Pentagon = {ctor: 'Pentagon'};
 var _user$project$Stamps$update = F2(
 	function (msg, model) {
 		var _p2 = msg;
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{
-					clicks: {ctor: '::', _0: _p2._0, _1: model.clicks}
-				}),
-			{ctor: '[]'});
+		switch (_p2.ctor) {
+			case 'AddClick':
+				var _p3 = _p2._0;
+				var newStamp = model.shift ? A2(_user$project$Stamps$Stamp, _p3, _user$project$Stamps$Pentagon) : A2(_user$project$Stamps$Stamp, _p3, _user$project$Stamps$Circle);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							stamps: {ctor: '::', _0: newStamp, _1: model.stamps}
+						}),
+					{ctor: '[]'});
+			case 'HandleShift':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{shift: _p2._0}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
+		}
 	});
-var _user$project$Stamps$model = {clicks: _user$project$Stamps$clicks};
-var _user$project$Stamps$Model = function (a) {
-	return {clicks: a};
+var _user$project$Stamps$NoOp = {ctor: 'NoOp'};
+var _user$project$Stamps$HandleShift = function (a) {
+	return {ctor: 'HandleShift', _0: a};
+};
+var _user$project$Stamps$mapKeyDown = function (keyCode) {
+	var _p4 = A2(_elm_lang$core$Debug$log, 'mapKeyDown', keyCode);
+	if (_p4 === 16) {
+		return _user$project$Stamps$HandleShift(true);
+	} else {
+		return _user$project$Stamps$NoOp;
+	}
+};
+var _user$project$Stamps$mapKeyUp = function (keyCode) {
+	var _p5 = A2(_elm_lang$core$Debug$log, 'mapKeyUp', keyCode);
+	if (_p5 === 16) {
+		return _user$project$Stamps$HandleShift(false);
+	} else {
+		return _user$project$Stamps$NoOp;
+	}
 };
 var _user$project$Stamps$AddClick = function (a) {
 	return {ctor: 'AddClick', _0: a};
 };
 var _user$project$Stamps$subscriptions = function (model) {
-	return _elm_lang$mouse$Mouse$clicks(
-		function (_p3) {
-			var _p4 = _p3;
-			return _user$project$Stamps$AddClick(
-				{ctor: '_Tuple2', _0: _p4.x, _1: _p4.y});
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _elm_lang$mouse$Mouse$clicks(
+				function (_p6) {
+					var _p7 = _p6;
+					return _user$project$Stamps$AddClick(
+						{ctor: '_Tuple2', _0: _p7.x, _1: _p7.y});
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$keyboard$Keyboard$downs(_user$project$Stamps$mapKeyDown),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$keyboard$Keyboard$ups(_user$project$Stamps$mapKeyUp),
+					_1: {ctor: '[]'}
+				}
+			}
 		});
 };
 var _user$project$Stamps$main = _elm_lang$html$Html$program(
