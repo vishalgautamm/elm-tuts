@@ -7,6 +7,7 @@ import Html exposing (Html)
 import Mouse
 import Keyboard
 
+
 -- MODEL
 
 
@@ -34,6 +35,7 @@ type alias Model =
 type Msg
     = AddClick Position
     | HandleShift Bool
+    | Clear
     | NoOp
 
 
@@ -63,6 +65,9 @@ update msg model =
 
         HandleShift pressed ->
             { model | shift = pressed } ! []
+
+        Clear ->
+            { model | stamps = [] } ! []
 
         NoOp ->
             model ! []
@@ -106,10 +111,11 @@ view model =
             |> Element.toHtml
 
 
+
 -- MAIN
 
 
-main : Program Never Model Msg 
+main : Program Never Model Msg
 main =
     Html.program
         { init = ( model, Cmd.none )
@@ -134,6 +140,9 @@ mapKeyUp keyCode =
     case Debug.log "mapKeyUp" keyCode of
         16 ->
             HandleShift False
+
+        67 ->
+            Clear
 
         _ ->
             NoOp

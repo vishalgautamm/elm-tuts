@@ -73,6 +73,15 @@ var _user$project$Stamps$update = F2(
 						model,
 						{shift: _p2._0}),
 					{ctor: '[]'});
+			case 'Clear':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							stamps: {ctor: '[]'}
+						}),
+					{ctor: '[]'});
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -81,6 +90,7 @@ var _user$project$Stamps$update = F2(
 		}
 	});
 var _user$project$Stamps$NoOp = {ctor: 'NoOp'};
+var _user$project$Stamps$Clear = {ctor: 'Clear'};
 var _user$project$Stamps$HandleShift = function (a) {
 	return {ctor: 'HandleShift', _0: a};
 };
@@ -94,10 +104,13 @@ var _user$project$Stamps$mapKeyDown = function (keyCode) {
 };
 var _user$project$Stamps$mapKeyUp = function (keyCode) {
 	var _p5 = A2(_elm_lang$core$Debug$log, 'mapKeyUp', keyCode);
-	if (_p5 === 16) {
-		return _user$project$Stamps$HandleShift(false);
-	} else {
-		return _user$project$Stamps$NoOp;
+	switch (_p5) {
+		case 16:
+			return _user$project$Stamps$HandleShift(false);
+		case 67:
+			return _user$project$Stamps$Clear;
+		default:
+			return _user$project$Stamps$NoOp;
 	}
 };
 var _user$project$Stamps$AddClick = function (a) {
