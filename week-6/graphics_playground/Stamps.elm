@@ -9,23 +9,37 @@ import Mouse
 
 -- MODEL
 
+type Shape
+  = Pentagon
+  | Circle
+
+type alias Stamp =
+  { position : (Int, Int)
+  , shape : Shape
+
+}
+
 
 type alias Position =
     ( Int, Int )
 
 
 type alias Model =
-    { clicks : List Position
+    { stamps : List Stamp
+    , shift : Bool 
     }
 
 
 type Msg
     = AddClick Position
+    | HandleShift Bool
+    | NoOp
 
 
 model : Model
 model =
-    { clicks = clicks
+    { stamps = []
+    , shift = False
     }
 
 
@@ -37,8 +51,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         AddClick pos ->
-            { model | clicks = pos :: model.clicks } ! []
-
+          let
+              newStamp =
+                if model.shift then
+                   Stamp pos Pentagon
+                else
+                  Stamp pos Circle 
+          in 
+             { model | stamps = newStamp :: model.stamps } ! []
 
 
 -- VIEW
