@@ -1,0 +1,118 @@
+var _user$project$Main$keyUp = F2(
+	function (keyCode, model) {
+		var _p0 = keyCode;
+		switch (_p0) {
+			case 38:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						y: model.y + 1,
+						points: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: model.x, _1: model.y + 1},
+							_1: model.points
+						}
+					});
+			case 40:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						y: model.y - 1,
+						points: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: model.x, _1: model.y - 1},
+							_1: model.points
+						}
+					});
+			case 37:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						x: model.x - 1,
+						points: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: model.x - 1, _1: model.y},
+							_1: model.points
+						}
+					});
+			case 39:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						x: model.x + 1,
+						points: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: model.x + 1, _1: model.y},
+							_1: model.points
+						}
+					});
+			default:
+				return model;
+		}
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p1 = msg;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$Main$keyUp, _p1._0, model),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$Main$drawLine = function (points) {
+	var intsToFloats = function (_p2) {
+		var _p3 = _p2;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$toFloat(_p3._0),
+			_1: _elm_lang$core$Basics$toFloat(_p3._1)
+		};
+	};
+	var shape = _evancz$elm_graphics$Collage$path(
+		A2(_elm_lang$core$List$map, intsToFloats, points));
+	return A2(
+		_evancz$elm_graphics$Collage$traced,
+		_evancz$elm_graphics$Collage$solid(_elm_lang$core$Color$red),
+		shape);
+};
+var _user$project$Main$view = function (model) {
+	return _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			800,
+			800,
+			{
+				ctor: '::',
+				_0: _user$project$Main$drawLine(model.points),
+				_1: {ctor: '[]'}
+			}));
+};
+var _user$project$Main$initialModel = {
+	points: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 0, _1: 0},
+		_1: {ctor: '[]'}
+	},
+	x: 0,
+	y: 0
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {points: a, x: b, y: c};
+	});
+var _user$project$Main$KeyUp = function (a) {
+	return {ctor: 'KeyUp', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$keyboard$Keyboard$ups(_user$project$Main$KeyUp);
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{
+		init: A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_user$project$Main$initialModel,
+			{ctor: '[]'}),
+		update: _user$project$Main$update,
+		view: _user$project$Main$view,
+		subscriptions: _user$project$Main$subscriptions
+	})();
