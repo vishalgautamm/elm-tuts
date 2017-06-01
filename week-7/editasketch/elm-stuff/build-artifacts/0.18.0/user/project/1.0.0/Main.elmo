@@ -79,8 +79,8 @@ var _user$project$Main$view = function (model) {
 	return _evancz$elm_graphics$Element$toHtml(
 		A3(
 			_evancz$elm_graphics$Collage$collage,
-			800,
-			800,
+			1800,
+			1800,
 			{
 				ctor: '::',
 				_0: _user$project$Main$drawLine(model.points),

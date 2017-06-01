@@ -6,6 +6,10 @@ import Element exposing (..)
 import Keyboard
 import Html exposing (..)
 import Html as App
+import Keyboard.Extra
+
+
+-- MODEL
 
 
 type alias Model =
@@ -33,8 +37,8 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    collage 800
-        800
+    collage 1800
+        1800
         [ (drawLine model.points) ]
         |> Element.toHtml
 
