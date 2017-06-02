@@ -1,0 +1,67 @@
+var _user$project$Repl$validDates = {
+	ctor: '::',
+	_0: 'Mon, 25 Dec 1995 13:30:00 GMT',
+	_1: {
+		ctor: '::',
+		_0: 'Wed, 27 Dec 1995 13:30:00 GMT',
+		_1: {
+			ctor: '::',
+			_0: 'foo',
+			_1: {
+				ctor: '::',
+				_0: 'var',
+				_1: {
+					ctor: '::',
+					_0: 'Fri, 29 Dec1995 13:30:00 GMT',
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	}
+};
+var _user$project$Repl$t_s_o_l = {ctor: '_Tuple0'};
+var _user$project$Repl$maybeDate = function (dateStr) {
+	var _p0 = _elm_lang$core$Date$fromString(dateStr);
+	if (_p0.ctor === 'Ok') {
+		return _elm_lang$core$Maybe$Just(_p0._0);
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Repl$filteredResult = function (xs) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Date$year,
+		A2(_elm_lang$core$List$filterMap, _user$project$Repl$maybeDate, xs));
+};
+var _user$project$Repl$epoch = _elm_lang$core$Date$fromTime(0);
+var _user$project$Repl$dates = {
+	ctor: '::',
+	_0: 'Mon 25 Jan',
+	_1: {
+		ctor: '::',
+		_0: '02 June 2017',
+		_1: {
+			ctor: '::',
+			_0: '3 Feb 2005',
+			_1: {
+				ctor: '::',
+				_0: 'bob',
+				_1: {
+					ctor: '::',
+					_0: 'foo',
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	}
+};
+var _user$project$Repl$filteredDates = A2(_elm_lang$core$List$filterMap, _user$project$Repl$maybeDate, _user$project$Repl$dates);
+var _user$project$Repl$filtedYears = A2(_elm_lang$core$List$map, _elm_lang$core$Date$year, _user$project$Repl$filteredDates);
+var _user$project$Repl$dateCheck = function (_p1) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		_user$project$Repl$epoch,
+		_elm_lang$core$Date$fromString(_p1));
+};
+var _user$project$Repl$d_e_l_t_r_o_n_3_0_3_0 = _user$project$Repl$filteredResult(_user$project$Repl$dates);
