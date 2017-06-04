@@ -1,0 +1,5 @@
+var _user$project$Route$init = function (location) {
+	return location;
+};
+var _user$project$Route$Topics = {ctor: 'Topics'};
+var _user$project$Route$Home = {ctor: 'Home'};
