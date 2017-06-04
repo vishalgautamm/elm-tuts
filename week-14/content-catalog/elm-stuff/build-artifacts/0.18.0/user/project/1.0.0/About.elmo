@@ -1,1 +1,0 @@
-var _user$project$About$view = _elm_lang$html$Html$text('Welcome to the about page');
