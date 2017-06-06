@@ -1,6 +1,6 @@
 # Elm Projects
 
-- Mini Projects build with elm
+Mini Projects build with elm
 
 * Counter 
 * ToDo MVC with JSON Persistence 
