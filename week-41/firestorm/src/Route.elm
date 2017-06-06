@@ -13,7 +13,7 @@
 --
 -- 6 - Define fromLocation that takes the location and parses the path and takes us to maybe a route
 -- fromLocation : Location -> Maybe Route
--- 6.1 if the location.hash is empty then return Just Home, else parseHash router to the location
+-- 6.1 if the String.isEmpty location.hash is true then return Just Home, else parseHash router to the location
 
 
 module Route exposing (Route(..), fromLocation)
